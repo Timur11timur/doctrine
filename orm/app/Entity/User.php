@@ -10,11 +10,15 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 #[Entity]
 #[Table('Users')]
+#[HasLifecycleCallbacks]
 class User
 {
     #[Id]
@@ -53,6 +57,12 @@ class User
 
     #[Column('updated_at')]
     private DateTime $updatedAt;
+
+    #[PrePersist]
+    public function onPrePersist(LifecycleEventArgs $args): void
+    {
+        $this->createdAt = new DateTime();
+    }
 
     public function getId(): int
     {
@@ -169,13 +179,6 @@ class User
     public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTime $createdAt): User
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     public function getUpdatedAt(): DateTime

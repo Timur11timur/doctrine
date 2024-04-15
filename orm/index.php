@@ -34,9 +34,7 @@ $user = (new User())
     ->setEmail('some@email.com')
     ->setPassword('Password')
     ->setRoles('Admin, Dev')
-    ->setStatus(StatusEnum::ACTIVE)
-    ->setCreatedAt(new DateTime())
-    ->setUpdatedAt(new DateTime());
+    ->setStatus(StatusEnum::ACTIVE);
 
 $entityManager->persist($user);
 
